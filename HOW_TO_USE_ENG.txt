@@ -1,0 +1,42 @@
+
+Natural Language Processing Project
+
+---------------- SYSTEM REQUIREMENTS and EXECUTION of PYTHON PROGRAMS ----------------
+
+PREREQUISITI
+	from shell UNIX lanciare:
+	--- MODULE Texttable (documentazione: https://github.com/foutaise/texttable)
+
+		"sudo pip install texttable" 
+
+	--- MODULE nltk (documentazione: https://www.nltk.org/index.html)
+
+		"sudo pip install -U nltk"
+		"sudo pip install -U numpy"
+
+	from python IDE:
+	--- INSTALL feature NLTK
+
+		(on MAC OS before install certificaes:
+			1. from bash, go to python directory "cd /Applications/Python 'versioneDiPython es. 3.6'/"
+			2. run command "./Install Certificates.command
+		)
+
+		"import nltk"
+		"nltk.download('punkt')"
+		"nltk.download('averaged_perceptron_tagger')"
+		"nltk.download('maxent_ne_chunker')"
+		"nltk.download('words')"
+
+PROGRAMS EXECUTION
+
+	from UNIX shell, run command:
+
+		"python programmaX.py corpus_femminile.py corpus_maschile.py > nomeoutput.txt"
+	
+	change "programmaX.py" with "programmaUno.py" or "programmaDue.py"
+
+	open the output file "nomeoutput.txt" with text editor to look for the result. In the directory there will be files:
+	"output_prUno.txt" and "output_prDue.txt" wich contains original output.
+
+-------------------------------------------------------------------------------------------------------------

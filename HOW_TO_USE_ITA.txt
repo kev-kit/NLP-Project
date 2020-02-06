@@ -1,0 +1,46 @@
+
+Progetto di Linguistica Computazionale
+
+---------------- PREREQUISITI e LANCIO DEI PROGRAMMI PYTHON ----------------
+
+PREREQUISITI
+	Da terminale UNIX lanciare:
+	--- MODULO Texttable (documentazione: https://github.com/foutaise/texttable)
+
+		"sudo pip install texttable" 
+
+	--- MODULO nltk (documentazione: https://www.nltk.org/index.html)
+
+		"sudo pip install -U nltk"
+		"sudo pip install -U numpy"
+
+	Da IDE python o da python lanciato su terminale UNIX:
+	--- INSTALLARE feature NLTK
+
+		(su MAC OS installare prima i certificati:
+			1. da terminale dirigersi sulla cartella di python "cd /Applications/Python 'versioneDiPython es. 3.6'/"
+			2. lanciare il comando "./Install Certificates.command
+		)
+
+		"import nltk"
+		"nltk.download('punkt')"
+		"nltk.download('averaged_perceptron_tagger')"
+		"nltk.download('maxent_ne_chunker')"
+		"nltk.download('words')"
+
+LANCIO DEI PROGRAMMI
+
+	da terminale UNIX lanciare il comando:
+
+		"python programmaX.py corpus_femminile.py corpus_maschile.py > nomeoutput.txt"
+	
+	sostituire "programmaX.py" con "programmaUno.py" oppure "programmaDue.py"
+
+	aprire il file creato "nomeoutput.txt" con un editor di testo per visualizzarne il contenuto. Nella cartella sono anche disponibili i file
+	"output_prUno.txt" e "output_prDue.txt" nei quali sono riportati i risultati orginari.
+
+NOTA: I file di output risultano correttamente visualizzabili in editor testuali quali:
+      	notepad++ / sublime text / gedit / emacs
+      Non vengono corretamente visualizzati dall'editor di testo "blocco Note" di windows
+
+-------------------------------------------------------------------------------------------------------------
