@@ -25,27 +25,23 @@ def medie(corp_frasi, corp_token):
 
 	return mediaTok, mediaChar
 
-# round(x, y) arrotonda per eccesso il numero float x, restituendo y cifre dopo la virgola
-
 # restituisco la lista contenente il numero di hapax per porzioni incrementali di 1000 token
 def hapax_1000(corpus, vocabolario):
 	hapax = []
 	acc = 0
 	for i in range(len(corpus)):
 		if i % 1000 == 0 and i != 0: 
-		# va messo prima del successivo if altrimenti avrei gia' controllato i primi 1001 tokens, dato che la prima posizione dell'array e' 0
 			hapax.append(acc)
 		if vocabolario[corpus[i]] == 1:
 			acc += 1
 	return hapax
 
-# ricchezza lessicale attraverso TTR (Type/Token Ratio) su i primi 5000 token del corpus 
+# ricchezza lessicale attraverso TTR (Type/Token Ratio) sui primi 5000 token del corpus 
 def TTR(corpus):
 	cut_corpus = corpus[:]
-# per copiare una lista in un'altra variabile uso sintassi b = a[:] RICORDA E' TIPO LISTA, NO ARRAY, percio' vi si accede (nella HEAP) tramite puntatore
 	del(cut_corpus[4999:len(cut_corpus)])
 	parole_tipo = sorted(cut_corpus)
-	parole_tipo = set(cut_corpus) # parole tipo nei primi 5000 token  
+	parole_tipo = set(cut_corpus) 		# parole tipo nei primi 5000 token  
 	
 	# parole unita' corrispondo a len(cut_corpus) cioe' 5000. 
 	return round(float(len(parole_tipo))/len(cut_corpus), 2)
@@ -86,22 +82,20 @@ def vocabolario_corpus(corpus):
 	univoco = set(corpus)
 	univoco = sorted(univoco)
 
-	j = i = 0									# DA COMMENTARE!
-	vocabolario = {} # creao il vocabolario come oggetto dizionario e, ad ogni elemento, assegno la sua frequenza
+	j = i = 0
+	vocabolario = {} 		# creao il vocabolario come oggetto dizionario e ad ogni elemento assegno la sua frequenza
 
-	while i < len(univoco):		# "stesso risultato" della FreqDist()
+	while i < len(univoco):
 		num_occ = 0
 		while  (ordinato[j] == univoco[i]) and (j < len(ordinato)-1):
 			num_occ += 1
 			j += 1
 		if (j == len(corpus)-1):
 			vocabolario[univoco[i]] = num_occ+1
-			# devo utilizzare questa dicitura in quanto controllare l'ultimo token darebbe indice j == len(obj) causando il controllo in una posizione non esistente e percio' errore.
+			# devo utilizzare questa dicitura in quanto controllare l'ultimo token darebbe indice j == len(obj) causando il controllo in una posizione non esistente e percio' errore
 		else:
 			vocabolario[univoco[i]] = num_occ
 		i += 1
-
-#	sort_vocabolario = sorted(vocabolario.items(), key = lambda x: x[1], reverse=True)
 
 	return vocabolario
 
@@ -125,7 +119,7 @@ def freq_assoluta(corpus):
 			aggettivi += 1
 		if re.match(r'VB.*', corpus[i][1]):
 			verbi += 1
-		if re.match(r'PRP.*|WP.*', corpus[i][1]): # sistemare RE
+		if re.match(r'PRP.*|WP.*', corpus[i][1]):
 			pronomi += 1
 	return sostantivi, aggettivi, verbi, pronomi
 
@@ -172,30 +166,30 @@ def layout_punto2(nome_mag, val_mag, nome_min, val_min, argomento):
 def layout_punto3_A(nome_mag, val_mag, nome_min, val_min, argomento):
 	print "La", argomento, "di", nome_mag, "e' maggiore rispetto a", nome_min + ":", val_mag, "vs", val_min 
 
-# layout di stampa della prima parte del punto 3 (hapax), utilizzo modulo texttable (che crea tabelle con caratteri ASCII) e str.format() con suo mini linguaggio (documentazione: https://docs.python.org/3/library/stdtypes.html#str.format e https://docs.python.org/3/library/string.html#formatspec)
+# layout di stampa della prima parte del punto 3 (hapax), utilizzo modulo texttable (che crea tabelle con caratteri ASCII) e str.format() (documentazione: https://docs.python.org/3/library/stdtypes.html#str.format e https://docs.python.org/3/library/string.html#formatspec)
 def layout_punto3_B(nome_A, hapax_A, nome_B, hapax_B):
 	table = Texttable()						# creo oggetto tabella
 	table.__init__(0)						# imposto la max_width infinita
-	raw_head = ["", nome_A, nome_B, ""]							# lista contenente le stringhe da inserire nel titolo della tabella non ancora formattati
+	raw_head = ["", nome_A, nome_B, ""]				# lista contenente le stringhe da inserire nel titolo della tabella non ancora formattati
 	head_format = ["{:^6}", "{:^22}", "{:^22}", "{:^6}"]		# tipo di formattazione da applicare alle stringhe di raw_head
-	head = []													# lista in cui inserire le stringhe di raw_head formattate
+	head = []							# lista in cui inserire le stringhe di raw_head formattate
 	for i, j in zip(raw_head, head_format):
-		head.append(j.format(i))			# applico la formattazione
+		head.append(j.format(i))				# applico la formattazione
 	table.header(head)						# definisco le stringhe titoli della tabella (passate tramite lista) 
 
-	raw_subHead = ["token", "hapax", "incr", "hapax", "incr", "diff"]					# stringhe sottotitolo non formattate
+	raw_subHead = ["token", "hapax", "incr", "hapax", "incr", "diff"]				# stringhe sottotitolo non formattate
 	subHead_format = ["{:^6}", "{:^11}", "{:^11}", "{:^11}", "{:^11}", "{:^6}"]			# formattazione sottotitolo
-	subHead = []																		# stringhe sottotitolo formattate
+	subHead = []											# stringhe sottotitolo formattate
 	for i, j in zip(raw_subHead, subHead_format):
 		subHead.append(j.format(i))
-	subHead[1] += subHead[2]				# unisco le stringhe [1] e [2] le quali comporranno le il sottotitolo (devo fare questo per via della limitazione di texttable di inserire non piu' elementi della prima riga nelle righe successive)
-	subHead[3] += subHead[4]				# come sopra per stringhe [3] e [4]
+	subHead[1] += subHead[2]					# unisco le stringhe [1] e [2] le quali comporranno le il sottotitolo (devo fare questo per via della limitazione di texttable di inserire non piu' elementi della prima riga nelle righe successive)
+	subHead[3] += subHead[4]					# come sopra per stringhe [3] e [4]
 	del(subHead[2])							# elimino [2] che ho gia' unito alla stringa [1]
 	del(subHead[3])							# elimino [3] che ho gia' unito alla stringa [2] ([3] e [2] sono rispettivamente [3] e [4] prima della eliminazione della stringa [2])
-	table.add_row(subHead)					# aggiungo la riga sottotitolo alla tabella
+	table.add_row(subHead)						# aggiungo la riga sottotitolo alla tabella
 
-	len_row = len(hapax_A) if len(hapax_A) > len(hapax_B) else len(hapax_B)			# numero righe contenenti dati
-	for i in range(len_row):														# creo le righe in cui inserisco i dati
+	len_row = len(hapax_A) if len(hapax_A) > len(hapax_B) else len(hapax_B)				# numero righe contenenti dati
+	for i in range(len_row):									# creo le righe in cui inserisco i dati
 		# dati da inserire nella riga senza formattazione
 		raw_row = [str(1000 * (i+1)),																																	# numero di token in esame 												
 					"" if i > (len(hapax_A)-1) else str(hapax_A[i]), 																									# numero di hapax per token corpus A (la clausola if evita "out of range")
@@ -210,51 +204,51 @@ def layout_punto3_B(nome_A, hapax_A, nome_B, hapax_B):
 			row.append(j.format(i))
 		row[1] += row[2]							# stessi passaggi come riga subHead
 		row[3] += row[4]							# //
-		del(row[2])									# //	
-		del(row[3])									# //
+		del(row[2])								# //	
+		del(row[3])								# //
 		table.add_row(row)							# aggiunta riga dati alla tabella
 
 	print table.draw()								# stampa tabella
 
 # layout di stampa della prima parte del punto 5 e 6
 def layout_punto5e6(nome_A, cat_A, nome_B, cat_B):
-	table = Texttable()						# creo oggetto tabella
-	table.__init__(0)						# imposto la max_width infinita
+	table = Texttable()								# creo oggetto tabella
+	table.__init__(0)								# imposto la max_width infinita
 	raw_head = ["", nome_A, nome_B]							# lista contenente le stringhe da inserire nel titolo della tabella non ancora formattati
-	head_format = ["{:^12}", "{:^24}", "{:^24}"]			# tipo di formattazione da applicare alle stringhe di raw_head
-	head = []												# lista in cui inserire le stringhe di raw_head formattate
+	head_format = ["{:^12}", "{:^24}", "{:^24}"]					# tipo di formattazione da applicare alle stringhe di raw_head
+	head = []									# lista in cui inserire le stringhe di raw_head formattate
 	for i, j in zip(raw_head, head_format):
-		head.append(j.format(i))			# applico la formattazione
-	table.header(head)						# definisco le stringhe titoli della tabella (passate tramite lista) 
+		head.append(j.format(i))						# applico la formattazione
+	table.header(head)								# definisco le stringhe titoli della tabella (passate tramite lista) 
 
 	raw_subHead = ["", "freq_rel %", "media", "freq_rel %", "media"]					# stringhe sottotitolo non formattate
 	subHead_format = ["{:^12}", "{:^12}", "{:^12}", "{:^12}", "{:^12}"]					# formattazione sottotitolo
-	subHead = []																		# stringhe sottotitolo formattate
+	subHead = []												# stringhe sottotitolo formattate
 	for i, j in zip(raw_subHead, subHead_format):
 		subHead.append(j.format(i))
-	subHead[1] += subHead[2]				# unisco le stringhe [1] e [2] le quali comporranno le il sottotitolo (devo fare questo per via della limitazione di texttable di inserire non piu' elementi della prima riga nelle righe successive)
-	subHead[3] += subHead[4]				# come sopra per stringhe [3] e [4]
+	subHead[1] += subHead[2]					# unisco le stringhe [1] e [2] le quali comporranno le il sottotitolo (devo fare questo per via della limitazione di texttable di inserire non piu' elementi della prima riga nelle righe successive)
+	subHead[3] += subHead[4]					# come sopra per stringhe [3] e [4]
 	del(subHead[2])							# elimino [2] che ho gia' unito alla stringa [1]
 	del(subHead[3])							# elimino [3] che ho gia' unito alla stringa [2] ([3] e [2] sono rispettivamente [3] e [4] prima della eliminazione della stringa [2])
-	table.add_row(subHead)					# aggiungo la riga sottotitolo alla tabella
+	table.add_row(subHead)						# aggiungo la riga sottotitolo alla tabella
 
 	catGram = ["sostantivi", "aggettivi", "verbi", "pronomi"] 
 	j = 0
-	for i in catGram:														# creo le righe in cui inserisco i dati
+	for i in catGram:												# creo le righe in cui inserisco i dati
 		# dati da inserire nella riga senza formattazione
 		raw_row = [i, str(cat_A[j][0]), str(cat_A[j][1]), str(cat_B[j][0]), str(cat_B[j][1])]
-		row_format = ["{:^12}", "{:^12}", "{:^12}", "{:^12}", "{:^12}"]				# formattazione riga
-		row = []																	# array che conterra riga di dati formattata
+		row_format = ["{:^12}", "{:^12}", "{:^12}", "{:^12}", "{:^12}"]						# formattazione riga
+		row = []												# array che conterra riga di dati formattata
 		for i, k in zip(raw_row, row_format):
 			row.append(k.format(i))
-		row[1] += row[2]							# stessi passaggi come riga subHead
-		row[3] += row[4]							# //
+		row[1] += row[2]								# stessi passaggi come riga subHead
+		row[3] += row[4]								# //
 		del(row[2])									# //	
 		del(row[3])									# //
-		table.add_row(row)							# aggiunta riga dati alla tabella
+		table.add_row(row)								# aggiunta riga dati alla tabella
 		j+=1
 
-	print table.draw()								# stampa tabella
+	print table.draw()									# stampa tabella
 
 
 #						--- funzione main e rispettiva chiamata ---
@@ -298,34 +292,34 @@ def main(file1, file2):
 	################### chiamata funzioni e inizializzazione variabili ###################
 
 	nomeCorpus_A = file1
-	raw_A = openFile(file1)		# funzioni ausiliarie
+	raw_A = openFile(file1)				# funzioni ausiliarie
 
 	nomeCorpus_B = file2
-	raw_B = openFile(file2)		# funzioni ausiliarie
+	raw_B = openFile(file2)				# funzioni ausiliarie
 
-	frasi_A = frasi_corpus(raw_A) 	# corpus A diviso in frasi, funzioni ausiliarie
-	frasi_B = frasi_corpus(raw_B)	# corpus B diviso in frasi, funzioni ausiliarie
+	frasi_A = frasi_corpus(raw_A) 			# corpus A diviso in frasi, funzioni ausiliarie
+	frasi_B = frasi_corpus(raw_B)			# corpus B diviso in frasi, funzioni ausiliarie
 	
 	# inizio analisi
 	
-	token_A = token_corpus(frasi_A) # corpus A tokenizzato, funzioni ausiliarie
-	token_B = token_corpus(frasi_B) # corpus B tokenizzato, funzioni ausiliarie
+	token_A = token_corpus(frasi_A) 		# corpus A tokenizzato, funzioni ausiliarie
+	token_B = token_corpus(frasi_B) 		# corpus B tokenizzato, funzioni ausiliarie
 	
 	lenght_A = len(token_A)
 	lenght_B = len(token_B) 
 	
 	# calcolo medie
 	
-	mediaTok_A, mediaChar_A = medie(frasi_A, token_A) # funzioni richieste
-	mediaTok_B, mediaChar_B = medie(frasi_B, token_B) # funzioni richieste
+	mediaTok_A, mediaChar_A = medie(frasi_A, token_A) 		# funzioni richieste
+	mediaTok_B, mediaChar_B = medie(frasi_B, token_B) 		# funzioni richieste
 
 	# calcolo vocabolario e hapax
 
-	vocabolario_A = vocabolario_corpus(token_A)		# funzioni ausiliarie
-	hapax_A = hapax_1000(token_A, vocabolario_A) 	# funzioni richieste
+	vocabolario_A = vocabolario_corpus(token_A)			# funzioni ausiliarie
+	hapax_A = hapax_1000(token_A, vocabolario_A) 			# funzioni richieste
 	
-	vocabolario_B = vocabolario_corpus(token_B)		# funzioni ausiliarie
-	hapax_B = hapax_1000(token_B, vocabolario_B) 	# funzioni richieste
+	vocabolario_B = vocabolario_corpus(token_B)			# funzioni ausiliarie
+	hapax_B = hapax_1000(token_B, vocabolario_B) 			# funzioni richieste
 
 	token_comuni = common_token(vocabolario_A, vocabolario_B)	# funzioni ausiliarie
 
